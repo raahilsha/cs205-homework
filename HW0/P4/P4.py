@@ -31,8 +31,13 @@ if __name__ == '__main__':
     # Normally, this data wouldn't be available in the real world
     #####################
 
-    # ax.plot(x_coords, y_coords, z_coords,
-    #         '--b', label='True trajectory')
+    s_true = np.loadtxt('P4_trajectory.txt', delimiter=',')
+    x_coords = s_true[:,0]
+    y_coords = s_true[:,1]
+    z_coords = s_true[:,2]
+
+    ax.plot(x_coords, y_coords, z_coords,
+            '--b', label='True trajectory')
 
     #####################
     # Part 2:
@@ -40,22 +45,48 @@ if __name__ == '__main__':
     # Read the observation array and plot it (Part 2)
     #####################
 
-    # ax.plot(x_coords, y_coords, z_coords,
-    #         '.g', label='Observed trajectory')
+    s_obs = np.loadtxt('P4_measurements.txt', delimiter=',')
+    stretch_mat = np.matrix([[1 / rx, 0, 0],
+                             [0, 1 / ry, 0],
+                             [0, 0, 1 / rz]])
+    s_obs_unstretched = np.array((stretch_mat * (s_obs).transpose()))
+    x_coords = s_obs_unstretched[0,:]
+    y_coords = s_obs_unstretched[1,:]
+    z_coords = s_obs_unstretched[2,:]
+
+    ax.plot(x_coords, y_coords, z_coords,
+            '.g', label='Observed trajectory')
 
     #####################
     # Part 3:
     # Use the initial conditions and propagation matrix for prediction
-    # A = ?
-    # a = ?
-    # s = ?
+    # A = propagation matrix
+    # a = velocity adjustment for gravity
+    # s = all of the states
     #####################
 
     # Initial conditions for s0
-    # Compute the rest of sk using Eq (1)
+    A = np.matrix([[1, 0, 0, dt, 0, 0],
+                   [0, 1, 0, 0, dt, 0],
+                   [0, 0, 1, 0, 0, dt],
+                   [0, 0, 0, 1 - c * dt, 0, 0],
+                   [0, 0, 0, 0, 1 - c * dt, 0],
+                   [0, 0, 0, 0, 0, 1 - c * dt]])
+    a = np.matrix([0, 0, 0, 0, 0, g * dt]).transpose()
+    s = np.zeros([6, K])
+    s[:,0] = s_true[0,:]
 
-    # ax.plot(x_coords, y_coords, z_coords,
-    #         '-k', label='Blind trajectory')
+    # Compute the rest of sk using Eq (1)
+    for i in range(1, K):
+        s[:,i] = (A * np.matrix(s[:,i - 1]).transpose() + a).transpose()
+
+    s = np.array(s)
+    x_coords = s[0,:]
+    y_coords = s[1,:]
+    z_coords = s[2,:]
+
+    ax.plot(x_coords, y_coords, z_coords,
+            '-k', label='Blind trajectory')
 
     #####################
     # Part 4:
