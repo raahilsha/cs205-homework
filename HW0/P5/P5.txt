@@ -1,1 +1,15 @@
 # Your answers here.
+
+1) It would take the cashier 255 seconds to add the totals. Getting the sum for the first two bags would take 1 second, while every subsequent bag would take another second to add to the pre-existing sum.
+
+2) Each of the 8 cashiers (1 to start + 7 coworkers) would sum 32 of the bags each, taking 31 seconds to get 8 preliminary sums. It would take another second for 4 of them to bring these 8 sums to 4, another second for 2 cashiers to turn 4 sums to 2, and a final second for one cashier to add up those two sums. All in all, this is 31 + 1 + 1 + 1 seconds, or 34 seconds to verify the sum with 8 cashiers, which is a lot faster than just the original cashier by herself.
+
+3) It would take 1 second for the infinite employees to turn the 256 bags into 128 sums, and another second for each further consolidation. So, 256 -> 128 -> 64 -> 32 -> 16 -> 8 -> 4 -> 2 -> 1 sums would take a total of 8 seconds to compute.
+
+4) It would take the mathematical ceiling of the logarithm with base 2 of N number of seconds to count the total ( ceil(log2(N)) seconds ).
+
+5) If each of the 256 cashiers was to come up to me and collect 1 bag, it would take 256 seconds to give away all the bags. This approach has already matched the amount of time it would take for one cashier to add the totals of all the bags by herself, and no compuation has been accomplished yet. It also makes no sense to only give one bag to a cashier, as they would need at least 2 bags to begin computing the sum, and the cashiers would then have to exchange bags between themselves so that 128 cashiers each hold 2 bags.
+
+If we give 128 cashiers 2 bags apiece, it would take 128 seconds to give away all the bags. These 128 cashiers would then add the values of their bags together, taking 1 second. 64 of the cashiers would then give their computed value to 64 of the other cashiers, taking another second. These 64 would compute (+1) and trade off to 32 (+1), who would then compute (+1) and trade to 16 (+1), to 8 (+2), to 4 (+2), to 2 (+2). These final 2 cashiers would compute (+1), one would give their total sum to the second (+1), who would then add his previous sum to this new one (+1), giving the total number of pennies. This is a total of 143 seconds.
+
+To speed up this process, we could give each of 2 cashiers 128 bags, who would then split these between other cashiers until we get to each of 128 cashiers having two bags as in the paragraph above. It would take another 15 seconds after that point to find the total sum. Giving 2 cashiers 128 bags would take one second, 4x64 another one, 8x32 another, 16x16 another, 32x8 another, 64x4 another, and 128x2 another. Using this method, it would take a total of 22 seconds for the cashiers to verify the total number of pennies.

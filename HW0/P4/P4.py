@@ -60,9 +60,9 @@ if __name__ == '__main__':
     #####################
     # Part 3:
     # Use the initial conditions and propagation matrix for prediction
-    # A = propagation matrix
-    # a = velocity adjustment for gravity
-    # s = all of the states
+    # A = ?
+    # a = ?
+    # s = ?
     #####################
 
     # Initial conditions for s0
@@ -73,17 +73,17 @@ if __name__ == '__main__':
                    [0, 0, 0, 0, 1 - c * dt, 0],
                    [0, 0, 0, 0, 0, 1 - c * dt]])
     a = np.matrix([0, 0, 0, 0, 0, g * dt]).transpose()
-    s = np.zeros([6, K])
-    s[:,0] = s_true[0,:]
+    s_simple = np.zeros([6, K])
+    s_simple[:,0] = s_true[0,:]
 
     # Compute the rest of sk using Eq (1)
     for i in range(1, K):
-        s[:,i] = (A * np.matrix(s[:,i - 1]).transpose() + a).transpose()
+        s_simple[:,i] = (A * np.matrix(s_simple[:,i - 1]).transpose() + a).transpose()
 
-    s = np.array(s)
-    x_coords = s[0,:]
-    y_coords = s[1,:]
-    z_coords = s[2,:]
+    s_simple = np.array(s_simple)
+    x_coords = s_simple[0,:]
+    y_coords = s_simple[1,:]
+    z_coords = s_simple[2,:]
 
     ax.plot(x_coords, y_coords, z_coords,
             '-k', label='Blind trajectory')
